@@ -1,6 +1,8 @@
 package org.example.corepayuserservice.user.presentation;
 
 import lombok.RequiredArgsConstructor;
+import org.example.corepayuserservice.user.application.command.CreateUserCommand;
+import org.example.corepayuserservice.user.application.command.UpdateUserInfoCommand;
 import org.example.corepayuserservice.user.presentation.dto.req.UserCreatReq;
 import org.example.corepayuserservice.user.presentation.dto.req.UserUpdateInfoReq;
 import org.example.corepayuserservice.user.presentation.dto.res.UserDto;
@@ -20,27 +22,45 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserCreatReq req) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.creat(req));
+        CreateUserCommand command = CreateUserCommand.builder()
+                .name(req.name())
+                .email(req.email())
+                .role(req.role())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.creat(command));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.get(id));
+    @GetMapping("/me")
+    public ResponseEntity<UserDto> getMyInfo(@RequestHeader("X-User-Id") Long userId) {
+        return ResponseEntity.ok(userService.get(userId));
     }
 
+    //전체 유저 목록 (관리자 전용)
     @GetMapping
-    public ResponseEntity<List<UserDto>> getUserList() {
+    public ResponseEntity<List<UserDto>> getUserList(@RequestHeader("X-User-Id") Long adminId) {
         return ResponseEntity.ok(userService.getList());
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<UserDto> updateUserInfo(@RequestBody UserUpdateInfoReq req) {
-        return ResponseEntity.ok(userService.updateInfo(req));
+    @PatchMapping("/me")
+    public ResponseEntity<UserDto> updateMyInfo(
+            @RequestHeader("X-User-Id") Long userId,
+            @RequestBody UserUpdateInfoReq req)
+    {
+        UpdateUserInfoCommand command = UpdateUserInfoCommand.builder()
+                .id(userId)
+                .name(req.name())
+                .email(req.email())
+                .build();
+
+        return ResponseEntity.ok(userService.updateInfo(command));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.delete(id);
-        return ResponseEntity.noContent().build(); // 204 No Content 반환
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteMyAccount(@RequestHeader("X-User-Id") Long userId) {
+        userService.delete(userId); // 본인 계정 삭제
+        return ResponseEntity.noContent().build();
     }
+
+
 }

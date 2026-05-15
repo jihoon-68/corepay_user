@@ -1,8 +1,8 @@
 package org.example.corepayuserservice.user.application;
 
 import lombok.RequiredArgsConstructor;
-import org.example.corepayuserservice.user.presentation.dto.req.UserCreatReq;
-import org.example.corepayuserservice.user.presentation.dto.req.UserUpdateInfoReq;
+import org.example.corepayuserservice.user.application.command.CreateUserCommand;
+import org.example.corepayuserservice.user.application.command.UpdateUserInfoCommand;
 import org.example.corepayuserservice.user.presentation.dto.req.UserUpdateRole;
 import org.example.corepayuserservice.user.presentation.dto.req.UserUpdateState;
 import org.example.corepayuserservice.user.presentation.dto.res.UserDto;
@@ -22,16 +22,16 @@ public class BasicUserService implements UserService {
 
     @Override
     @Transactional
-    public UserDto creat(UserCreatReq req) {
-        User user = userRepository.findByEmail(req.email());
+    public UserDto creat(CreateUserCommand command) {
+        User user = userRepository.findByEmail(command.email());
         if (user != null) {
-            throw new IllegalArgumentException("이미 존재하는 이메일입니다: " + req.email());
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다: " + command.email());
         }
 
         User newUser = User.builder()
-                .name(req.name())
-                .email(req.email())
-                .role(req.role())
+                .name(command.name())
+                .email(command.email())
+                .role(command.role())
                 .build();
 
         User savedUser = userRepository.save(newUser);
@@ -40,11 +40,11 @@ public class BasicUserService implements UserService {
 
     @Override
     @Transactional
-    public UserDto updateInfo(UserUpdateInfoReq req) {
-        User user = userRepository.findById(req.id())
+    public UserDto updateInfo(UpdateUserInfoCommand command) {
+        User user = userRepository.findById(command.id())
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
 
-        user.updateInfo(req.name(), req.email());
+        user.updateInfo(command.name(), command.email());
         userRepository.save(user);
 
         return UserDto.from(user);

@@ -1,5 +1,7 @@
 package org.example.corepayuserservice.user.application;
 
+import org.example.corepayuserservice.user.application.command.CreateUserCommand;
+import org.example.corepayuserservice.user.application.command.UpdateUserInfoCommand;
 import org.example.corepayuserservice.user.presentation.dto.req.UserCreatReq;
 import org.example.corepayuserservice.user.presentation.dto.req.UserUpdateInfoReq;
 import org.example.corepayuserservice.user.presentation.dto.req.UserUpdateRole;
@@ -10,8 +12,8 @@ import java.util.List;
 
 public interface UserService {
 
-    UserDto creat(UserCreatReq req);
-    UserDto updateInfo(UserUpdateInfoReq req);
+    UserDto creat(CreateUserCommand command);
+    UserDto updateInfo(UpdateUserInfoCommand command);
     void updateState(UserUpdateState updateState);
     void updateRole(UserUpdateRole updateRole);
     UserDto get(Long id);
