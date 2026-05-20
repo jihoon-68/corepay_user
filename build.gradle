@@ -36,19 +36,14 @@ dependencies {
     implementation 'org.flywaydb:flyway-mysql'
 
     // 4. Security & JWT
-    /**
      implementation 'org.springframework.boot:spring-boot-starter-security'
      implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
      runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
      runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
-     **/
 
     // 카프카
     implementation 'org.springframework.boot:spring-boot-starter-kafka'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
-
-    // 레디스
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     // 5. 편의성 및 검증
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -58,11 +53,13 @@ dependencies {
 
     // 6. Actuator & Prometheus
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
 
     // 7. Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    runtimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {

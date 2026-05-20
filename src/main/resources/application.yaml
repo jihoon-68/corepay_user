@@ -10,6 +10,12 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 50     # 10 → 30
+      minimum-idle: 10          # 항상 10개 유지
+      connection-timeout: 3000  # 3초 대기 후 실패
+      idle-timeout: 600000      # 10분
+      max-lifetime: 1800000     # 30분
 
   jpa:
     hibernate:
@@ -17,26 +23,47 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
 
   flyway:
     enabled: true
     baseline-on-migrate: true
     locations: classpath:db/migration
 
+  kafka:
+    bootstrap-servers: localhost:9092 # 카프카 서버 주소
+    consumer:
+      group-id: ${spring.application.name}-group # 각 서버의 고유 그룹 이름
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: "1"
+      retries: 3
+    properties:
+      spring:
+        json:
+          trusted:
+            packages: "*"
+          use:
+            type:
+              headers: false
+
   threads:
     virtual:
       enabled: true
 
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: prometheus, health, info, metrics # 프로메테우스가 접근할 수 있도록 엔드포인트 개방
-    metrics:
-      tags:
-        application: ${spring.application.name} # 그라파나 대시보드에서 서버 필터링할 때 사용
-
   logging:
     level:
       org.hibernate.orm.jdbc.bind: TRACE
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus, health, info, metrics, threaddump, heapdump # 프로메테우스가 접근할 수 있도록 엔드포인트 개방
+  metrics:
+    tags:
+      application: ${spring.application.name} # 그라파나 대시보드에서 서버 필터링할 때 사용

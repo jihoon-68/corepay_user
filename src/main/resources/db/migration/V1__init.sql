@@ -2,7 +2,8 @@
 CREATE TABLE users (
                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
                        name VARCHAR(20) NOT NULL,
-                       email VARCHAR(100) NOT NULL,
+                       email VARCHAR(100) NOT NULL UNIQUE,
+                       password VARCHAR(255) NOT NULL,
                        role ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER', -- rule 오타 수정
                        state ENUM('ACTIVE', 'INACTIVE', 'DELETED') NOT NULL DEFAULT 'ACTIVE',
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
