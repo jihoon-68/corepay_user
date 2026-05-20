@@ -30,6 +30,9 @@ public class User {
     @Column(length = 100, nullable = false)
     private String email;
 
+    @Column(length = 100, nullable = false)
+    private String password;
+
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
@@ -47,9 +50,10 @@ public class User {
     private LocalDateTime updatedAt;
 
     @Builder
-    public User (String name, String email, UserRole role){
+    public User (String name, String email, String password, UserRole role){
         this.name = name;
         this.email = email;
+        this.password = password;
         this.role = role;
         this.state = UserState.ACTIVE;
     }
@@ -61,6 +65,14 @@ public class User {
         if(email != null && !Objects.equals(this.email, email)){
             this.email = email;
         }
+    }
+
+    public boolean updatePassword(@NotNull String password){
+        if(password != null && !Objects.equals(this.password, password)){
+            this.password =password;
+            return true;
+        }
+        return false;
     }
 
     public void updateRole(@NotNull UserRole role){
