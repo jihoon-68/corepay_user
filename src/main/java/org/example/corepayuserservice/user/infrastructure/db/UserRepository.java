@@ -1,4 +1,4 @@
-package org.example.corepayuserservice.user.infrastructure;
+package org.example.corepayuserservice.user.infrastructure.db;
 
 import org.example.corepayuserservice.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
