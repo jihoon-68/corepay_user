@@ -3,6 +3,7 @@ package org.example.corepayuserservice.user.presentation;
 import lombok.RequiredArgsConstructor;
 import org.example.corepayuserservice.user.application.command.CreateUserCommand;
 import org.example.corepayuserservice.user.application.command.UpdateUserInfoCommand;
+import org.example.corepayuserservice.user.domain.UserRole;
 import org.example.corepayuserservice.user.presentation.dto.req.UserCreatReq;
 import org.example.corepayuserservice.user.presentation.dto.req.UserUpdateInfoReq;
 import org.example.corepayuserservice.user.presentation.dto.res.UserDto;
@@ -20,12 +21,13 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<UserDto> createUser(@RequestBody UserCreatReq req) {
         CreateUserCommand command = CreateUserCommand.builder()
                 .name(req.name())
                 .email(req.email())
-                .role(req.role())
+                .password(req.password())
+                .role(UserRole.valueOf(req.role()))
                 .build();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.creat(command));
