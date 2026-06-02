@@ -6,7 +6,6 @@ import lombok.Builder;
 public record UpdateUserInfoCommand(
         Long id,
         String name,
-        String email,
-        String password
+        String email
 ){
 }

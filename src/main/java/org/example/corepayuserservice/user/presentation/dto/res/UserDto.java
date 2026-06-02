@@ -2,7 +2,7 @@ package org.example.corepayuserservice.user.presentation.dto.res;
 
 import lombok.Builder;
 import org.example.corepayuserservice.user.domain.User;
-import org.example.corepayuserservice.user.domain.UserRole;
+import org.example.corepayuserservice.global.domain.UserRole;
 import org.example.corepayuserservice.user.domain.UserState;
 
 import java.time.LocalDateTime;

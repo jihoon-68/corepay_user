@@ -1,9 +1,10 @@
 package org.example.corepayuserservice.user.presentation;
 
 import lombok.RequiredArgsConstructor;
+import org.example.corepayuserservice.global.application.UserRegisterUseCase;
 import org.example.corepayuserservice.user.application.command.CreateUserCommand;
 import org.example.corepayuserservice.user.application.command.UpdateUserInfoCommand;
-import org.example.corepayuserservice.user.domain.UserRole;
+import org.example.corepayuserservice.global.domain.UserRole;
 import org.example.corepayuserservice.user.presentation.dto.req.UserCreatReq;
 import org.example.corepayuserservice.user.presentation.dto.req.UserUpdateInfoReq;
 import org.example.corepayuserservice.user.presentation.dto.res.UserDto;
@@ -20,17 +21,19 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserRegisterUseCase useCase;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserCreatReq req) {
+    public ResponseEntity<Void> createUser(@RequestBody UserCreatReq req) {
         CreateUserCommand command = CreateUserCommand.builder()
                 .name(req.name())
                 .email(req.email())
                 .password(req.password())
                 .role(UserRole.valueOf(req.role()))
                 .build();
+        useCase.register(command);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.creat(command));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/me")
@@ -39,7 +42,7 @@ public class UserController {
     }
 
     //전체 유저 목록 (관리자 전용)
-    @GetMapping
+    @GetMapping("/admin/userlist")
     public ResponseEntity<List<UserDto>> getUserList(@RequestHeader("X-User-Id") Long adminId) {
         return ResponseEntity.ok(userService.getList());
     }

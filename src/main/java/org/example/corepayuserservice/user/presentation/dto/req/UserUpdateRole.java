@@ -1,6 +1,6 @@
 package org.example.corepayuserservice.user.presentation.dto.req;
 
-import org.example.corepayuserservice.user.domain.UserRole;
+import org.example.corepayuserservice.global.domain.UserRole;
 
 public record UserUpdateRole(
         Long id,
