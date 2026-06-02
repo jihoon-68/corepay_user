@@ -4,7 +4,7 @@ import org.example.corepayuserservice.user.application.BasicUserService;
 import org.example.corepayuserservice.user.application.command.CreateUserCommand;
 import org.example.corepayuserservice.user.application.command.UpdateUserInfoCommand;
 import org.example.corepayuserservice.user.domain.User;
-import org.example.corepayuserservice.user.domain.UserRole;
+import org.example.corepayuserservice.global.domain.UserRole;
 import org.example.corepayuserservice.user.infrastructure.db.UserRepository;
 import org.example.corepayuserservice.user.presentation.dto.res.UserDto;
 import org.junit.jupiter.api.AfterEach;
