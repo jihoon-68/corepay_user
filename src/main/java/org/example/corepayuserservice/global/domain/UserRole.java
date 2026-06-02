@@ -1,4 +1,4 @@
-package org.example.corepayuserservice.user.domain;
+package org.example.corepayuserservice.global.domain;
 
 public enum UserRole {
     USER,

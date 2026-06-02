@@ -1,5 +1,10 @@
 server:
   port: 8081
+  tomcat:
+    threads:
+      max: 100
+      min-spare: 10
+
 spring:
   config:
     import: "optional:file:.env[.properties]"
@@ -11,16 +16,16 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     hikari:
-      maximum-pool-size: 50     # 10 → 30
-      minimum-idle: 10          # 항상 10개 유지
-      connection-timeout: 3000  # 3초 대기 후 실패
-      idle-timeout: 600000      # 10분
-      max-lifetime: 1800000     # 30분
+      maximum-pool-size: 100
+      minimum-idle: 10
+      connection-timeout: 3000
+      idle-timeout: 600000
+      max-lifetime: 1800000
 
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: false
@@ -67,3 +72,6 @@ management:
   metrics:
     tags:
       application: ${spring.application.name} # 그라파나 대시보드에서 서버 필터링할 때 사용
+jwt:
+  secret: ${JWT_SECRET}
+  expiration_time: 3600000
