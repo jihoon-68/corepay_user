@@ -23,7 +23,7 @@ public class UserRegisterUseCase {
         SignupCommand authCommand = SignupCommand.builder()
                 .id(user.id())
                 .email(user.email())
-                .password(user.password())
+                .password(command.password())
                 .role(user.role())
                 .build();
 

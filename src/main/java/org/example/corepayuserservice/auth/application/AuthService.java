@@ -50,7 +50,7 @@ public class AuthService implements AuthInterface{
         AuthUser authUser = AuthUser.builder()
                 .id(command.id())
                 .email(command.email())
-                .password(command.password())
+                .password(passwordEncoder.encode(command.password()))
                 .role(command.role())
                 .build();
 
